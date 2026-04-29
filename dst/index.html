@@ -31,7 +31,7 @@
 
         <div id="toolsList" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
 
-            <div class="tool-card bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 overflow-hidden flex flex-col group" data-search="agentmail email inboxes for agents">
+            <div class="tool-card relative bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 overflow-hidden flex flex-col group" data-search="agentmail email inboxes for agents">
                 <div class="p-6 flex-grow">
                     <div class="flex justify-between items-start mb-4">
                         <div class="flex items-center">
@@ -66,7 +66,7 @@
             </div>
 
 
-            <div class="tool-card bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 overflow-hidden flex flex-col group" data-search="agentrq a human-in-the-loop task manager that let you and supervisor agent lead colony of ai agents in multiple projects">
+            <div class="tool-card relative bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 overflow-hidden flex flex-col group" data-search="agentrq a human-in-the-loop task manager that let you and supervisor agent lead colony of ai agents in multiple projects">
                 <div class="p-6 flex-grow">
                     <div class="flex justify-between items-start mb-4">
                         <div class="flex items-center">
@@ -123,7 +123,9 @@
     </div>
 
     <script>
-        function copyMcpUrl(button, url) {
+        function copyMcpUrl(event, button, url) {
+            event.preventDefault();
+            event.stopPropagation();
             navigator.clipboard.writeText(url).then(() => {
                 const container = button.closest('.mcp-container');
                 const mcpSvg = button.querySelector('.mcp-svg');

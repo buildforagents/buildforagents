@@ -116,7 +116,9 @@ def generate_html(tools, dest_dir="dst"):
     </div>
 
     <script>
-        function copyMcpUrl(button, url) {
+        function copyMcpUrl(event, button, url) {
+            event.preventDefault();
+            event.stopPropagation();
             navigator.clipboard.writeText(url).then(() => {
                 const container = button.closest('.mcp-container');
                 const mcpSvg = button.querySelector('.mcp-svg');
@@ -204,7 +206,7 @@ def generate_html(tools, dest_dir="dst"):
             escaped_mcp = html.escape(tool['mcp_url'])
             mcp_icon = f"""
                 <div class="relative inline-block mcp-container">
-                    <button type="button" onclick="copyMcpUrl(this, '{escaped_mcp}')" class="text-gray-400 hover:text-gray-900 transition-colors bg-gray-50 hover:bg-gray-100 p-2 rounded-full cursor-pointer mcp-btn" title="Copy MCP URL">
+                    <button type="button" onclick="copyMcpUrl(event, this, '{escaped_mcp}')" class="text-gray-400 hover:text-gray-900 transition-colors bg-gray-50 hover:bg-gray-100 p-2 rounded-full cursor-pointer mcp-btn" title="Copy MCP URL">
                         <svg class="w-5 h-5 mcp-svg" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <g clip-path="url(#clip0_19_13)">
                                 <path d="M18 84.8528L85.8822 16.9706C95.2548 7.59798 110.451 7.59798 119.823 16.9706V16.9706C129.196 26.3431 129.196 41.5391 119.823 50.9117L68.5581 102.177" stroke="currentColor" stroke-width="12" stroke-linecap="round"/>
@@ -257,7 +259,7 @@ def generate_html(tools, dest_dir="dst"):
             """
 
         card = f"""
-            <div class="tool-card bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 overflow-hidden flex flex-col group" data-search="{search_data}">
+            <div class="tool-card relative bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 overflow-hidden flex flex-col group" data-search="{search_data}">
                 <div class="p-6 flex-grow">
                     <div class="flex justify-between items-start mb-4">
                         <div class="flex items-center">
