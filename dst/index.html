@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Build for Agents</title>
+    <!-- Tailwind CSS v4 CDN -->
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <style>
+        /* Custom styles if any */
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen">
+    <div class="max-w-5xl mx-auto px-4 py-12">
+        <header class="mb-16 text-center">
+            <h1 class="text-5xl font-extrabold text-gray-900 mb-6 tracking-tight">Build for Agents</h1>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto">A curated list of tools and services that are specifically built for agents</p>
+        </header>
+
+        <div class="mb-10">
+            <div class="relative max-w-2xl mx-auto">
+                <input type="text" id="searchInput"
+                       class="w-full pl-14 pr-4 py-4 rounded-2xl border-0 ring-1 ring-gray-200 shadow-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all text-lg bg-white"
+                       placeholder="Search tools...">
+                <svg class="absolute left-5 top-4.5 h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+            </div>
+        </div>
+
+        <div id="toolsList" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+
+        </div>
+
+        <div id="noResults" class="hidden text-center py-16 text-gray-500 text-lg">
+            <div class="mb-4">
+                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+            No tools found matching your search.
+        </div>
+
+        <footer class="mt-20 pt-8 border-t border-gray-200 text-center text-gray-500 text-sm pb-8">
+            <p>Open source repository. Contributions welcome on <a href="https://github.com/agentrq/buildforagents" class="text-blue-600 hover:text-blue-800 transition-colors font-medium">GitHub</a>.</p>
+        </footer>
+    </div>
+
+    <script>
+        function copyMcpUrl(event, button, url) {
+            event.preventDefault();
+            event.stopPropagation();
+            navigator.clipboard.writeText(url).then(() => {
+                const container = button.closest('.mcp-container');
+                const mcpSvg = button.querySelector('.mcp-svg');
+                const checkSvg = button.querySelector('.check-svg');
+                const tooltip = container.querySelector('.mcp-tooltip');
+
+                // Show check mark
+                mcpSvg.classList.add('hidden');
+                checkSvg.classList.remove('hidden');
+
+                // Change tooltip text
+                const originalHtml = tooltip.innerHTML;
+                tooltip.innerHTML = '<span>Copied!</span><div class="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-gray-900 rotate-45"></div>';
+
+                setTimeout(() => {
+                    mcpSvg.classList.remove('hidden');
+                    checkSvg.classList.add('hidden');
+                    tooltip.innerHTML = originalHtml;
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Setup MCP tooltips hover behavior
+            document.querySelectorAll('.mcp-container').forEach(container => {
+                const btn = container.querySelector('.mcp-btn');
+                const tooltip = container.querySelector('.mcp-tooltip');
+                const copySvg = container.querySelector('.copy-svg');
+                const mcpSvg = container.querySelector('.mcp-svg');
+
+                btn.addEventListener('mouseenter', () => {
+                    tooltip.classList.remove('hidden');
+                    mcpSvg.classList.add('hidden');
+                    copySvg.classList.remove('hidden');
+                });
+
+                btn.addEventListener('mouseleave', () => {
+                    tooltip.classList.add('hidden');
+                    // Only restore MCP svg if we aren't showing the check mark
+                    if (container.querySelector('.check-svg').classList.contains('hidden')) {
+                        mcpSvg.classList.remove('hidden');
+                        copySvg.classList.add('hidden');
+                    }
+                });
+            });
+
+            const searchInput = document.getElementById('searchInput');
+            const tools = document.querySelectorAll('.tool-card');
+            const noResults = document.getElementById('noResults');
+
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                let hasVisibleCards = false;
+
+                tools.forEach(tool => {
+                    const searchData = tool.getAttribute('data-search');
+                    if (searchData.includes(searchTerm)) {
+                        tool.style.display = '';
+                        hasVisibleCards = true;
+                    } else {
+                        tool.style.display = 'none';
+                    }
+                });
+
+                if (hasVisibleCards) {
+                    noResults.classList.add('hidden');
+                } else {
+                    noResults.classList.remove('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
