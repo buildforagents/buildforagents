@@ -11,7 +11,7 @@ def parse_readme(file_path="README.md"):
 
     for line in content.splitlines():
         line = line.strip()
-        if not line.startswith("- ["):
+        if not (line.startswith("[") or line.startswith("- [")):
             continue
 
         links_matches = list(re.finditer(r'\[([^\]]+)\]\(([^)]+)\)', line))
@@ -39,11 +39,14 @@ def parse_readme(file_path="README.md"):
                 mcp_url = links_matches[i].group(2)
                 last_match = links_matches[i]
 
-        desc_start = line.find(":", last_match.end())
-        if desc_start != -1:
-            description = line[desc_start + 1:].strip()
-        else:
-            description = ""
+        desc_start_colon = line.find(":", last_match.end())
+        desc_start_dash = line.find(" - ", last_match.end())
+
+        description = ""
+        if desc_start_colon != -1:
+            description = line[desc_start_colon + 1:].strip()
+        elif desc_start_dash != -1:
+            description = line[desc_start_dash + 3:].strip()
 
         tools.append({
             "name": name,
