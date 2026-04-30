@@ -59,7 +59,7 @@ def parse_readme(file_path="README.md"):
 
     return tools
 
-def generate_html(tools, dest_dir="dst"):
+def generate_html(tools, dest_dir="docs"):
     if not os.path.exists(dest_dir):
         os.makedirs(dest_dir)
 
@@ -75,6 +75,7 @@ def generate_html(tools, dest_dir="dst"):
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Build for Agents</title>
+    <link rel="icon" type="image/svg+xml" href="./icons/logo.svg">
     <!-- Tailwind CSS v4 CDN -->
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <style>
@@ -85,6 +86,9 @@ def generate_html(tools, dest_dir="dst"):
 <body class="bg-gray-50 text-gray-900 min-h-screen">
     <div class="max-w-5xl mx-auto px-4 py-12">
         <header class="mb-16 text-center">
+            <div class="flex justify-center mb-6">
+                <img src="./icons/logo.svg" alt="Build for Agents Logo" class="w-20 h-20">
+            </div>
             <h1 class="text-5xl font-extrabold text-gray-900 mb-6 tracking-tight">Build for Agents</h1>
             <p class="text-xl text-gray-600 max-w-2xl mx-auto">A curated list of tools and services that are specifically built for agents</p>
         </header>
@@ -311,4 +315,4 @@ def generate_html(tools, dest_dir="dst"):
 if __name__ == "__main__":
     tools = parse_readme()
     generate_html(tools)
-    print(f"Generated index.html in dst/ directory with {len(tools)} tools.")
+    print(f"Generated index.html in docs/ directory with {len(tools)} tools.")
