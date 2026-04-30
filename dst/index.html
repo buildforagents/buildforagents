@@ -31,7 +31,7 @@
 
         <div id="toolsList" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             
-            <div class="tool-card relative bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 overflow-hidden flex flex-col group" data-search="agentmail email inboxes for agents">
+            <div class="tool-card relative bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 flex flex-col group" data-search="agentmail email inboxes for agents">
                 <div class="p-6 flex-grow">
                     <div class="flex justify-between items-start mb-4">
                         <div class="flex items-center">
@@ -55,7 +55,7 @@
                         Email inboxes for agents
                     </p>
                 </div>
-                <div class="px-6 py-4 bg-gray-50 border-t border-gray-50 flex items-center justify-between group-hover:bg-blue-50 transition-colors relative z-10">
+                <div class="px-6 py-4 bg-gray-50 rounded-b-2xl border-t border-gray-50 flex items-center justify-between group-hover:bg-blue-50 transition-colors relative z-10">
                     <a href="https://agentmail.to" target="_blank" rel="noopener noreferrer" class="text-blue-600 font-medium text-sm hover:text-blue-800 flex items-center w-full">
                         Visit Website
                         <svg class="w-4 h-4 ml-1.5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -66,7 +66,7 @@
             </div>
         
 
-            <div class="tool-card relative bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 overflow-hidden flex flex-col group" data-search="agentrq a human-in-the-loop task manager that let you and supervisor agent lead colony of ai agents in multiple projects">
+            <div class="tool-card relative bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 flex flex-col group" data-search="agentrq a human-in-the-loop task manager that let you and supervisor agent lead colony of ai agents in multiple projects">
                 <div class="p-6 flex-grow">
                     <div class="flex justify-between items-start mb-4">
                         <div class="flex items-center">
@@ -123,7 +123,7 @@
                         A human-in-the-loop task manager that let you and supervisor agent lead colony of AI agents in multiple projects
                     </p>
                 </div>
-                <div class="px-6 py-4 bg-gray-50 border-t border-gray-50 flex items-center justify-between group-hover:bg-blue-50 transition-colors relative z-10">
+                <div class="px-6 py-4 bg-gray-50 rounded-b-2xl border-t border-gray-50 flex items-center justify-between group-hover:bg-blue-50 transition-colors relative z-10">
                     <a href="https://agentrq.com" target="_blank" rel="noopener noreferrer" class="text-blue-600 font-medium text-sm hover:text-blue-800 flex items-center w-full">
                         Visit Website
                         <svg class="w-4 h-4 ml-1.5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -157,10 +157,12 @@
                 const container = button.closest('.mcp-container');
                 const mcpSvg = button.querySelector('.mcp-svg');
                 const checkSvg = button.querySelector('.check-svg');
+                const copySvg = button.querySelector('.copy-svg');
                 const tooltip = container.querySelector('.mcp-tooltip');
 
                 // Show check mark
                 mcpSvg.classList.add('hidden');
+                copySvg.classList.add('hidden');
                 checkSvg.classList.remove('hidden');
 
                 // Change tooltip text
@@ -168,9 +170,14 @@
                 tooltip.innerHTML = '<span>Copied!</span><div class="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-gray-900 rotate-45"></div>';
 
                 setTimeout(() => {
-                    mcpSvg.classList.remove('hidden');
                     checkSvg.classList.add('hidden');
                     tooltip.innerHTML = originalHtml;
+
+                    if (!tooltip.classList.contains('hidden')) {
+                        copySvg.classList.remove('hidden');
+                    } else {
+                        mcpSvg.classList.remove('hidden');
+                    }
                 }, 2000);
             }).catch(err => {
                 console.error('Failed to copy: ', err);
@@ -187,8 +194,10 @@
 
                 btn.addEventListener('mouseenter', () => {
                     tooltip.classList.remove('hidden');
-                    mcpSvg.classList.add('hidden');
-                    copySvg.classList.remove('hidden');
+                    if (container.querySelector('.check-svg').classList.contains('hidden')) {
+                        mcpSvg.classList.add('hidden');
+                        copySvg.classList.remove('hidden');
+                    }
                 });
 
                 btn.addEventListener('mouseleave', () => {

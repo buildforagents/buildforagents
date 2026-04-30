@@ -126,10 +126,12 @@ def generate_html(tools, dest_dir="dst"):
                 const container = button.closest('.mcp-container');
                 const mcpSvg = button.querySelector('.mcp-svg');
                 const checkSvg = button.querySelector('.check-svg');
+                const copySvg = button.querySelector('.copy-svg');
                 const tooltip = container.querySelector('.mcp-tooltip');
 
                 // Show check mark
                 mcpSvg.classList.add('hidden');
+                copySvg.classList.add('hidden');
                 checkSvg.classList.remove('hidden');
 
                 // Change tooltip text
@@ -137,9 +139,14 @@ def generate_html(tools, dest_dir="dst"):
                 tooltip.innerHTML = '<span>Copied!</span><div class="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-gray-900 rotate-45"></div>';
 
                 setTimeout(() => {
-                    mcpSvg.classList.remove('hidden');
                     checkSvg.classList.add('hidden');
                     tooltip.innerHTML = originalHtml;
+
+                    if (!tooltip.classList.contains('hidden')) {
+                        copySvg.classList.remove('hidden');
+                    } else {
+                        mcpSvg.classList.remove('hidden');
+                    }
                 }, 2000);
             }).catch(err => {
                 console.error('Failed to copy: ', err);
@@ -156,8 +163,10 @@ def generate_html(tools, dest_dir="dst"):
 
                 btn.addEventListener('mouseenter', () => {
                     tooltip.classList.remove('hidden');
-                    mcpSvg.classList.add('hidden');
-                    copySvg.classList.remove('hidden');
+                    if (container.querySelector('.check-svg').classList.contains('hidden')) {
+                        mcpSvg.classList.add('hidden');
+                        copySvg.classList.remove('hidden');
+                    }
                 });
 
                 btn.addEventListener('mouseleave', () => {
@@ -262,7 +271,7 @@ def generate_html(tools, dest_dir="dst"):
             """
 
         card = f"""
-            <div class="tool-card relative bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 overflow-hidden flex flex-col group" data-search="{search_data}">
+            <div class="tool-card relative bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 flex flex-col group" data-search="{search_data}">
                 <div class="p-6 flex-grow">
                     <div class="flex justify-between items-start mb-4">
                         <div class="flex items-center">
@@ -282,7 +291,7 @@ def generate_html(tools, dest_dir="dst"):
                         {html.escape(tool['description'])}
                     </p>
                 </div>
-                <div class="px-6 py-4 bg-gray-50 border-t border-gray-50 flex items-center justify-between group-hover:bg-blue-50 transition-colors relative z-10">
+                <div class="px-6 py-4 bg-gray-50 rounded-b-2xl border-t border-gray-50 flex items-center justify-between group-hover:bg-blue-50 transition-colors relative z-10">
                     <a href="{html.escape(tool['url'])}" target="_blank" rel="noopener noreferrer" class="text-blue-600 font-medium text-sm hover:text-blue-800 flex items-center w-full">
                         Visit Website
                         <svg class="w-4 h-4 ml-1.5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
