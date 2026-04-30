@@ -59,7 +59,7 @@ def parse_readme(file_path="README.md"):
 
     return tools
 
-def generate_html(tools, dest_dir="dst"):
+def generate_html(tools, dest_dir="docs"):
     if not os.path.exists(dest_dir):
         os.makedirs(dest_dir)
 
@@ -315,4 +315,4 @@ def generate_html(tools, dest_dir="dst"):
 if __name__ == "__main__":
     tools = parse_readme()
     generate_html(tools)
-    print(f"Generated index.html in dst/ directory with {len(tools)} tools.")
+    print(f"Generated index.html in docs/ directory with {len(tools)} tools.")
